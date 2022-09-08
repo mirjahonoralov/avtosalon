@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "../Container";
-import { BreadCrumbs, Crumb, MainTop } from "./style";
+import { BreadCrumbs, Button, Crumb, MainTop } from "./style";
 import right from "../../assets/icons/right.svg";
 import person from "../../assets/icons/person.svg";
 import CarTypes from "./CarTypes";
@@ -8,7 +8,6 @@ import { Routes, Route, useParams } from "react-router-dom";
 import Model from "./Model";
 import { useNavigate } from "react-router-dom";
 import Models from "./Models";
-import { Button } from "../Home/style";
 
 const Main = () => {
   const [crumbs, setCrumbs] = useState(["Bosh sahifa", "Modellari"]);

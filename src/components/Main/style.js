@@ -149,8 +149,6 @@ export const Selection = styled.form`
   }
 `;
 
-// import styled from "styled-components";
-
 export const Container = styled.div`
   padding: 82px 94px;
 `;
@@ -193,4 +191,15 @@ export const MainTop = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+
+export const Button = styled.div`
+  padding: 12px 30px;
+  background: #2a85ff;
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 `;
