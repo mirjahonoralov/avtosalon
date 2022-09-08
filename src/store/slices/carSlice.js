@@ -8,7 +8,6 @@ export const fetchAsyncAllCar = createAsyncThunk(
       `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
     );
     const data = await res.json();
-    console.log(data, "data");
     return data.data;
   }
 );
@@ -16,10 +15,8 @@ export const fetchAsyncAllCar = createAsyncThunk(
 export const fetchAsyncCar = createAsyncThunk(
   "cars/fetchAsyncCar",
   async (id) => {
-    console.log("start");
     const res = await fetch(`https://cartestwebapp.herokuapp.com/car/${id}`);
     const data = await res.json();
-    console.log(data, "data");
     return data.data;
   }
 );
@@ -32,7 +29,6 @@ export const fetchAsyncCategory = createAsyncThunk(
       "https://cartestwebapp.herokuapp.com/category/marka?limit=5&page=1"
     );
     const data = await res.json();
-    console.log(data, "data");
     return data.data;
   }
 );
@@ -44,7 +40,6 @@ export const fetchAsyncCarsByCategory = createAsyncThunk(
       `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
     );
     const data = await res.json();
-    console.log(data, "data");
     return data.data;
   }
 );

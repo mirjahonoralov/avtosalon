@@ -19,7 +19,6 @@ import Pagination from "./Pagination";
 const Content = () => {
   const categories = useSelector((state) => state.carSlice.categories);
   const allCars = useSelector((state) => state.carSlice.allCars);
-  console.log(allCars, "allCars");
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();

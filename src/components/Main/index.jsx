@@ -20,7 +20,6 @@ const Main = () => {
   };
 
   useEffect(() => {
-    console.log(params.id, "params.id");
     if (crumbs.length === 1) navigate("/main");
     if (crumbs.length === 2) navigate("/main/models");
     if (!params.id && crumbs.length === 3) navigate("/main/models/types");

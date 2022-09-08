@@ -18,7 +18,6 @@ import deg360 from "../../assets/icons/360.svg";
 
 const Model = () => {
   const car = useSelector((state) => state.carSlice.selectedCar);
-  console.log(car);
   const [side, setSide] = useState("outside");
   const params = useParams();
 
