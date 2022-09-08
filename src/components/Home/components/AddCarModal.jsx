@@ -8,7 +8,7 @@ import {
   Top,
   TopItem,
   TopLeft,
-} from "../style";
+} from "./style";
 import closeIcon from "../../../assets/icons/close.svg";
 import CustomSelector from "../../CustomSelector";
 import UploadFile from "../../UploadFile";

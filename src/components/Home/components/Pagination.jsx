@@ -1,5 +1,5 @@
 import React from "react";
-import { Page, PaginationWrapper } from "../style";
+import { Page, PaginationWrapper } from "./style";
 
 const Pagination = ({ total }) => {
   const items = [];

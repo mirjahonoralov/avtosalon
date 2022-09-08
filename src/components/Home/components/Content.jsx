@@ -8,7 +8,7 @@ import {
   Top,
   TopItem,
   TopLeft,
-} from "../style";
+} from "./style";
 import AddCarModal from "./AddCarModal";
 import { useDispatch, useSelector } from "react-redux";
 import plusIcon from "../../../assets/icons/plus.svg";
