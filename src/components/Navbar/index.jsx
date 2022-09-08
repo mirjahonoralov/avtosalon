@@ -1,9 +1,8 @@
 import React from "react";
-import { Avatar, Right, Wrapper } from "./style";
+import { Avatar, Button, Right, Wrapper } from "./style";
 import notification from "../../assets/icons/notification.svg";
 import person from "../../assets/icons/person.svg";
 import avatar from "../../assets/images/Avatar.svg";
-import { Button } from "../Home/style";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {

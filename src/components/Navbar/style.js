@@ -27,3 +27,14 @@ export const Avatar = styled.div`
     width: 100%;
   }
 `;
+
+export const Button = styled.div`
+  padding: 12px 30px;
+  background: #2a85ff;
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+`;
