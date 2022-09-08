@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Container from "../Container";
-import { BreadCrumbs, Crumb } from "./style";
+import { BreadCrumbs, Crumb, MainTop } from "./style";
 import right from "../../assets/icons/right.svg";
+import person from "../../assets/icons/person.svg";
 import CarTypes from "./CarTypes";
 import { Routes, Route, useParams } from "react-router-dom";
 import Model from "./Model";
 import { useNavigate } from "react-router-dom";
 import Models from "./Models";
+import { Button } from "../Home/style";
 
 const Main = () => {
   const [crumbs, setCrumbs] = useState(["Bosh sahifa", "Modellari"]);
@@ -28,16 +30,22 @@ const Main = () => {
 
   return (
     <Container>
-      <BreadCrumbs>
-        {crumbs.map((item, id) => {
-          return (
-            <Crumb key={item} onClick={() => handleCrumbClick(id)}>
-              {item}
-              {id !== crumbs.length - 1 && <img src={right} alt="" />}
-            </Crumb>
-          );
-        })}
-      </BreadCrumbs>
+      <MainTop>
+        <BreadCrumbs>
+          {crumbs.map((item, id) => {
+            return (
+              <Crumb key={item} onClick={() => handleCrumbClick(id)}>
+                {item}
+                {id !== crumbs.length - 1 && <img src={right} alt="" />}
+              </Crumb>
+            );
+          })}
+        </BreadCrumbs>
+        <Button onClick={() => navigate("/main")}>
+          <img src={person} alt="" /> Admin o‘tish
+        </Button>
+      </MainTop>
+
       <Routes>
         <Route
           exact

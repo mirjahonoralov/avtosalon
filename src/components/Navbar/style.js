@@ -6,6 +6,8 @@ export const Wrapper = styled.div`
   height: 96px;
   background: #fcfcfc;
   box-shadow: inset 1px 0px 0px #f4f4f4;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const Right = styled.div`

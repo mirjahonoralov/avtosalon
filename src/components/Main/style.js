@@ -188,3 +188,9 @@ export const ImgWrapper2 = styled.div`
     width: 100%;
   }
 `;
+
+export const MainTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;

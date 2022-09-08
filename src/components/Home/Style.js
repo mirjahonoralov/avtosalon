@@ -106,13 +106,13 @@ export const Buttons = styled.div`
 `;
 
 export const Button = styled.div`
-  padding: 12px 15px;
+  padding: 12px 30px;
   background: #2a85ff;
   border-radius: 12px;
   color: #fff;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 `;
 

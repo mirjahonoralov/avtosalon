@@ -1,11 +1,18 @@
 import React from "react";
 import { Avatar, Right, Wrapper } from "./style";
 import notification from "../../assets/icons/notification.svg";
+import person from "../../assets/icons/person.svg";
 import avatar from "../../assets/images/Avatar.svg";
+import { Button } from "../Home/style";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <Wrapper>
+      <Button onClick={() => navigate("/main/models")}>
+        <img src={person} alt="" /> Asosiyga qaytish
+      </Button>
       <Right>
         <img src={notification} alt="notification" />
         <Avatar>
