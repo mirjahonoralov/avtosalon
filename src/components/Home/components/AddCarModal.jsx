@@ -59,7 +59,7 @@ const AddCarModal = ({ open, handleClose }) => {
           <ModalContent>
             <CustomSelector
               items={categoriesList}
-              value={defaultCategory}
+              value={data?.categoryId ? data?.categoryId : defaultCategory}
               label="Markasi"
               onInputChange={onInputChange}
               name="categoryId"
