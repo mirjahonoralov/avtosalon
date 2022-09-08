@@ -1,9 +1,8 @@
 import React from "react";
-
 import home from "../../../assets/icons/home.png";
 import union from "../../../assets/icons/union.png";
 import edit from "../../../assets/icons/edit.png";
-import { List, SidebarWrapper } from "../Style";
+import { List, SidebarWrapper } from "../style";
 
 const Sidebar = () => {
   return (

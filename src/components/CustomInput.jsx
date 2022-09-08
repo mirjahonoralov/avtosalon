@@ -1,16 +1,56 @@
-import { Stack, TextField, Typography } from "@mui/material";
 import React from "react";
+import styled from "styled-components";
 
-const CustomInput = ({ label, placeholder }) => {
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  p {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    color: #33383f;
+  }
+
+  input {
+    width: 100%;
+    background: #f4f4f4;
+    border-radius: 12px;
+    height: 48px;
+    padding-left: 12px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+  textarea {
+    width: 100%;
+    background: #f4f4f4;
+    border-radius: 12px;
+    padding: 12px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+`;
+
+const CustomInput = ({ label, placeholder, textArea, onInputChange, name }) => {
   return (
-    <Stack spacing={1} sx={{ width: "100%" }}>
-      <Typography>{label}</Typography>
-      <TextField
-        sx={{ width: "100%" }}
-        size="small"
-        placeholder={placeholder}
-      />
-    </Stack>
+    <Wrapper>
+      <p>{label}</p>
+      {textArea ? (
+        <textarea rows={7} onChange={(e) => onInputChange(e, name)} />
+      ) : (
+        <input
+          placeholder={placeholder}
+          onChange={(e) => onInputChange(e, name)}
+        />
+      )}
+    </Wrapper>
   );
 };
 

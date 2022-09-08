@@ -27,10 +27,8 @@ const Model = () => {
   const handleChange = (e) => setSide(e.target.value);
 
   useEffect(() => {
-    if (params.id) {
-      console.log("showed id");
-      dispatch(fetchAsyncCar(params.id));
-    }
+    if (params.id) dispatch(fetchAsyncCar(params.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (car.data) {
@@ -40,14 +38,14 @@ const Model = () => {
       distance,
       imgUrl,
       imgUrlAutside,
-      imgUrlInside,
+      // imgUrlInside,
       gearbok,
       marka,
       motor,
       price,
       tonirovka,
       year,
-      _id,
+      // _id,
     } = car?.data;
   }
 
@@ -105,6 +103,7 @@ const Model = () => {
               />
             )}
             {side === "inside" && (
+              // eslint-disable-next-line jsx-a11y/iframe-has-title
               <iframe
                 src="https://momento360.com/e/u/577e4483b1254dc786f66edd4fd3d397?utm_campaign=embed&utm_source=other&heading=-200.37&pitch=-15.67&field-of-view=75&size=medium"
                 frameborder="0"

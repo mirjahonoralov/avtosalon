@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Navbar from "../Navbar";
-// import Content from "./components/Content";
+import Content from "./components/Content";
 import Sidebar from "./components/Sidebar";
 
 const Wrapper = styled.div`
@@ -12,8 +12,10 @@ const Home = () => {
   return (
     <Wrapper>
       <Sidebar />
-      <Navbar />
-      {/* <Content /> */}
+      <div style={{ width: "100%" }}>
+        <Navbar />
+        <Content />
+      </div>
     </Wrapper>
   );
 };

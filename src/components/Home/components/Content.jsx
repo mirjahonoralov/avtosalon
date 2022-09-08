@@ -1,50 +1,60 @@
-import { Add, ArrowForwardOutlined } from "@mui/icons-material";
-import { Box, Button, Pagination, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Table, TopItem } from "../Style";
+import {
+  Button,
+  Buttons,
+  ContentComponent,
+  ContentWrapper,
+  Table,
+  Top,
+  TopItem,
+  TopLeft,
+} from "../style";
 import AddCarModal from "./AddCarModal";
-import { useDispatch } from "react-redux";
-import { fetchAsyncCarsData } from "../../../store/slices/carSlice";
+import { useDispatch, useSelector } from "react-redux";
+import plusIcon from "../../../assets/icons/plus.svg";
+import arrowRightIcon from "../../../assets/icons/arrow-right.svg";
+import { fetchAsyncAllCar } from "../../../store/slices/carSlice";
+import Pagination from "./Pagination";
 
 const Content = () => {
-  const items = [1, 2, 3, 4, 5, 6, 7];
+  const categories = useSelector((state) => state.carSlice.categories);
+  const allCars = useSelector((state) => state.carSlice.allCars);
+  console.log(allCars, "allCars");
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-
   const dispatch = useDispatch();
+
+  const handleAddCar = () => {
+    // dispatch(fetchAsyncCategory());
+    setOpen(true);
+  };
+
   useEffect(() => {
-    dispatch(fetchAsyncCarsData());
-  }, [dispatch]);
+    if (categories.data?.length) {
+      dispatch(fetchAsyncAllCar(categories.data[0]._id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <Box bgcolor={"#E3E3E3"} width="100%" flex={5} p={3} height={"100vh"}>
-      <Box
-        bgcolor={"#fcfcfc"}
-        borderRadius="8px"
-        p={2}
-        display="flex"
-        flexDirection={"column"}
-        alignItems={"center"}
-        gap="30px"
-      >
-        <Box display={"flex"} width="100%" justifyContent="space-between">
-          <Box display={"flex"} gap="16px">
+    <ContentWrapper>
+      <ContentComponent>
+        <Top>
+          <TopLeft>
             <TopItem color="#ffd88d" />
-            <Typography variant="h5" fontWeight={700}>
-              Mashinalar
-            </Typography>
-          </Box>
+            <h5>Mashinalar</h5>
+          </TopLeft>
 
-          <Button
-            color="primary"
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => setOpen(true)}
-          >
-            Mashina qo‘shish
-          </Button>
+          <Buttons>
+            <Button onClick={() => setOpen(true)}>
+              <img src={plusIcon} alt="" /> Kategoriya qo’shish
+            </Button>
+            <Button onClick={() => handleAddCar()}>
+              <img src={plusIcon} alt="" /> Mashina qo‘shish
+            </Button>
+          </Buttons>
           <AddCarModal open={open} handleClose={handleClose} />
-        </Box>
+        </Top>
         <Table>
           <thead>
             <th>#</th>
@@ -58,26 +68,45 @@ const Content = () => {
             <th></th>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr key={item}>
-                <td>1.</td>
-                <td>CHEVROLET</td>
-                <td>Avtomat karobka</td>
-                <td>Yoq</td>
-                <td>1.6</td>
-                <td>2016</td>
-                <td>Oq</td>
-                <td>3000km</td>
-                <td>
-                  <ArrowForwardOutlined />
-                </td>
-              </tr>
-            ))}
+            {allCars.data?.map(
+              (
+                {
+                  color,
+                  description,
+                  distance,
+                  imgUrl,
+                  imgUrlAutside,
+                  imgUrlInside,
+                  gearbok,
+                  marka,
+                  motor,
+                  price,
+                  tonirovka,
+                  year,
+                  _id,
+                },
+                index
+              ) => (
+                <tr key={_id}>
+                  <td>{index + 1}</td>
+                  <td>{marka.name}</td>
+                  <td>{gearbok}</td>
+                  <td>{tonirovka}</td>
+                  <td>{motor}</td>
+                  <td>{year}</td>
+                  <td>{color}</td>
+                  <td>{distance}</td>
+                  <td>
+                    <img src={arrowRightIcon} alt="" />
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </Table>
-        <Pagination count={10} />
-      </Box>
-    </Box>
+        <Pagination total={allCars?.total} />
+      </ContentComponent>
+    </ContentWrapper>
   );
 };
 

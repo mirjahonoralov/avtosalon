@@ -1,81 +1,137 @@
-import { Close } from "@mui/icons-material";
-import { Avatar, Modal, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomInput from "../../CustomInput";
-import CustomSelector from "../CustomSelector";
-import { TopItem } from "../Style";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  bgcolor: "#fff",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "16px",
-};
+import {
+  Button,
+  Modal,
+  ModalBg,
+  ModalContent,
+  Top,
+  TopItem,
+  TopLeft,
+} from "../style";
+import closeIcon from "../../../assets/icons/close.svg";
+import CustomSelector from "../../CustomSelector";
+import UploadFile from "../../UploadFile";
+import { useDispatch, useSelector } from "react-redux";
+import { postCar } from "../../../store/slices/carSlice";
 
 const AddCarModal = ({ open, handleClose }) => {
-  const items = ["item1", "item2", "item3", "item4"];
-  const handleChange = () => null;
+  const categories = useSelector((state) => state.carSlice.categories);
+  const { defaultCategory, data: categoriesList } = categories;
+  const items = ["Bor", "Yo'q"];
+  const dispatch = useDispatch();
+  const [data, setData] = useState({
+    imgUrl: "img-a463268af6f271bc3adac0871d505b4a.jpg",
+    imgUrlInside: "img-db607b3fdb99095051f37c849887ace7.jpg",
+    imgUrlAutside: "img-a463268af6f271bc3adac0871d505b4a.jpg",
+    price: 122000000,
+    year: 2020,
+    description: "avtomobil holati yaxshi",
+    tonirovka: " oldi orqa qilingan",
+    motor: "holati yaxshi ",
+    color: "rangi oq zavatiskoy",
+    distance: "11000",
+    gearbok: "avtomat",
+    categoryId: "63180c53d0953487569045c7",
+  });
 
-  return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box width={"80%"} sx={style} bgcolor="#fff">
-        <Box
-          display={"flex"}
-          width="100%"
-          justifyContent="space-between"
-          mb={2}
-        >
-          <Box display={"flex"} gap="16px">
-            <TopItem color="#CABDFF" />
-            <Typography variant="h5" fontWeight={700}>
-              Mashinalar
-            </Typography>
-          </Box>
-          <Avatar
-            sx={{ backgroundColor: "#EFEFEF", cursor: "pointer" }}
-            onClick={handleClose}
-          >
-            <Close sx={{ color: "#000" }} />
-          </Avatar>
-        </Box>
-        <Stack direction="row" spacing={3} sx={{ width: "100%" }}>
-          <Stack spacing={3} sx={{ width: "100%" }}>
+  const onInputChange = (e, name) => {
+    setData({ ...data, [name]: e.target.value });
+  };
+
+  useEffect(() => {
+    setData({ ...data, categoryId: defaultCategory, tonirovka: items[0] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultCategory]);
+
+  if (open)
+    return (
+      <>
+        <ModalBg />
+        <Modal>
+          <Top>
+            <TopLeft>
+              <TopItem color="#CABDFF" />
+              <h5>Mashina qo’shish</h5>
+            </TopLeft>
+            <img src={closeIcon} alt="" onClick={handleClose} />
+          </Top>
+          <ModalContent>
             <CustomSelector
-              items={items}
-              value={items[0]}
+              items={categoriesList}
+              value={defaultCategory}
               label="Markasi"
-              handleChange={handleChange}
+              onInputChange={onInputChange}
+              name="categoryId"
             />
-            <CustomInput label="Motor" placeholder={"Kiriting"} />
-            <CustomInput label="Color" placeholder={"Kiriting"} />
-            <CustomInput label="Gearbook" placeholder={"Kiriting"} />
-          </Stack>
-          <Stack spacing={3} sx={{ width: "100%" }}>
             <CustomSelector
               items={items}
-              value={items[0]}
+              value={data.tonirovka}
               label="Tanirovkasi"
-              handleChange={handleChange}
+              onInputChange={onInputChange}
+              type="second"
+              name="tonirovka"
             />
-            <CustomInput label="Year" placeholder={"Kiriting"} />
-            <CustomInput label="Distance" placeholder={"Kiriting"} />
-            <CustomInput label="Narxi" placeholder={"Kiriting"} />
-          </Stack>
-        </Stack>
-      </Box>
-    </Modal>
-  );
+            <CustomInput
+              name="motor"
+              data={data}
+              onInputChange={onInputChange}
+              label="Motor"
+              placeholder="Kiriting"
+            />
+            <CustomInput
+              name="year"
+              data={data}
+              onInputChange={onInputChange}
+              label="Year"
+              placeholder="Kiriting"
+            />
+            <CustomInput
+              name="color"
+              data={data}
+              onInputChange={onInputChange}
+              label="Color"
+              placeholder="Kiriting"
+            />
+            <CustomInput
+              name="distance"
+              data={data}
+              onInputChange={onInputChange}
+              label="Distance"
+              placeholder="Kiriting"
+            />
+            <CustomInput
+              name="gearbok"
+              data={data}
+              onInputChange={onInputChange}
+              label="Gearbok"
+              placeholder="Kiriting"
+            />
+            <CustomInput
+              name="price"
+              data={data}
+              onInputChange={onInputChange}
+              label="Narxi"
+              placeholder="Kiriting"
+            />
+            <UploadFile label="Rasm 360 ichki makon" placeholder="Yuklash" />
+            <UploadFile label="Rasm 360 tashqi makon" placeholder="Yuklash" />
+            <CustomInput
+              name="description"
+              data={data}
+              onInputChange={onInputChange}
+              label="Description"
+              placeholder="Mazmuni kiriting"
+              textArea={true}
+            />
+            <UploadFile label="Modeli turi uchun rasm" placeholder="Yuklash" />
+          </ModalContent>
+          <div style={{ marginLeft: "auto" }}>
+            <Button onClick={() => dispatch(postCar(data))}>Saqlash</Button>
+          </div>
+        </Modal>
+      </>
+    );
 };
 
 export default AddCarModal;

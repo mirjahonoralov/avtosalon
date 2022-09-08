@@ -1,5 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const fetchAsyncAllCar = createAsyncThunk(
+  // fetch all car/byId, but there is not API to get all cars
+  "cars/fetchAsyncAllCar",
+  async (id) => {
+    const res = await fetch(
+      `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
+    );
+    const data = await res.json();
+    console.log(data, "data");
+    return data.data;
+  }
+);
+
 export const fetchAsyncCar = createAsyncThunk(
   "cars/fetchAsyncCar",
   async (id) => {
@@ -10,28 +23,6 @@ export const fetchAsyncCar = createAsyncThunk(
     return data.data;
   }
 );
-
-// export const fetchAsyncCarById = createAsyncThunk(
-//   "car/fetchAsyncCarById",
-//   async () => {
-//     console.log("start by id");
-//     // const res = await fetch(`https://cartestwebapp.herokuapp.com/car/${id}`);
-//     // const data = await res.json();
-//     // console.log(data, "data");
-//     // return data.data;
-//   }
-// );
-
-// export const fetchAsyncGetCarById = createAsyncThunk(
-//   "car/fetchAsyncCarById",
-//   async () => {
-//     console.log("start by id");
-//     // const res = await fetch(`https://cartestwebapp.herokuapp.com/car/${id}`);
-//     // const data = await res.json();
-//     // console.log(data, "data");
-//     // return data.data;
-//   }
-// );
 
 export const fetchAsyncCategory = createAsyncThunk(
   "cars/fetchAsyncCategory",
@@ -50,8 +41,7 @@ export const fetchAsyncCarsByCategory = createAsyncThunk(
   "cars/fetchAsyncCarsByCategory",
   async (id) => {
     const res = await fetch(
-      `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=63180c53d0953487569045c7`
-      // `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
+      `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
     );
     const data = await res.json();
     console.log(data, "data");
@@ -59,9 +49,29 @@ export const fetchAsyncCarsByCategory = createAsyncThunk(
   }
 );
 
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzE4MzZmY2UxNzFkZTZjNWM5NjE4NzMiLCJwaG9uZU51bWJlciI6Iis5OTg5OTM0NjY3ODgiLCJpYXQiOjE2NjI1NzQ3NTgsImV4cCI6MTY2MzE3OTU1OH0.EPtYR-1mSY13c4ZHCNfa1x_RM3BvyGvuqzYRuRVofXU";
+
+export const postCar = async (data) => {
+  const res = await fetch("https://cartestwebapp.herokuapp.com/car", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+
+    body: JSON.stringify(data),
+  });
+  console.log(res);
+};
+
 const initialState = {
-  carData: [],
-  categories: [],
+  allCars: [],
+  categories: {
+    received: false,
+    data: null,
+    defaultCategory: null,
+  },
   carTypes: [],
   selectedCar: {
     pending: false,
@@ -75,21 +85,24 @@ export const carSlice = createSlice({
   name: "cars",
   reducers: {},
   extraReducers: {
-    // [fetchAsyncCarsData.pending]: () => {},
-    // [fetchAsyncCarsData.fulfilled]: (state, { payload }) => {
-    //   console.log(payload, "payload");
-    // },
-
     [fetchAsyncCategory.pending]: () => {},
     [fetchAsyncCategory.fulfilled]: (state, { payload }) => {
       console.log(payload, "payload");
-      state.categories = payload;
+      state.received = true;
+      state.categories.data = payload.data;
+      state.categories.defaultCategory = payload.data[0]._id;
     },
 
     [fetchAsyncCarsByCategory.pending]: () => {},
     [fetchAsyncCarsByCategory.fulfilled]: (state, { payload }) => {
       console.log(payload, "payload");
       state.carTypes = payload;
+    },
+
+    [fetchAsyncAllCar.pending]: () => {},
+    [fetchAsyncAllCar.fulfilled]: (state, { payload }) => {
+      console.log(payload, "payload");
+      state.allCars = payload;
     },
 
     [fetchAsyncCar.pending]: (state) => {

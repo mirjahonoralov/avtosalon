@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../Container";
 import { BreadCrumbs, Crumb } from "./style";
 import right from "../../assets/icons/right.svg";
-import Models from "../Models";
 import CarTypes from "./CarTypes";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import Model from "./Model";
+import { useNavigate } from "react-router-dom";
+import Models from "./Models";
 
 const Main = () => {
   const [crumbs, setCrumbs] = useState(["Bosh sahifa", "Modellari"]);
+  const navigate = useNavigate();
+  const params = useParams();
 
   const handleCrumbClick = (id) => {
     const filteredCrumbs = crumbs.slice(0, id + 1);
     setCrumbs(filteredCrumbs);
   };
+
+  useEffect(() => {
+    console.log(params.id, "params.id");
+    if (crumbs.length === 1) navigate("/main");
+    if (crumbs.length === 2) navigate("/main/models");
+    if (!params.id && crumbs.length === 3) navigate("/main/models/types");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [crumbs, params.id]);
 
   return (
     <Container>
@@ -40,11 +51,6 @@ const Main = () => {
         />
         <Route exact path="/models/types/:id" element={<Model />} />
       </Routes>
-
-      {/* {crumbs.length === 2 && <Models setCrumbs={setCrumbs} crumbs={crumbs} />}
-      {crumbs.length === 3 && (
-        <CarTypes setCrumbs={setCrumbs} crumbs={crumbs} />
-      )} */}
     </Container>
   );
 };

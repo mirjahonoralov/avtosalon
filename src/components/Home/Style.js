@@ -63,3 +63,103 @@ export const TopItem = styled.div`
   background: ${({ color }) => color && color};
   border-radius: 4px;
 `;
+
+export const ContentWrapper = styled.div`
+  background: #e3e3e3;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+`;
+
+export const ContentComponent = styled.div`
+  display: flex;
+  border-radius: 8px;
+  background: #fcfcfc;
+  padding: 24px 32px;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+`;
+
+export const Top = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  img {
+    cursor: pointer;
+  }
+`;
+
+export const TopLeft = styled.div`
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  h5 {
+    font-weight: 700;
+  }
+`;
+
+export const Buttons = styled.div`
+  display: flex;
+  gap: 32px;
+`;
+
+export const Button = styled.div`
+  padding: 12px 15px;
+  background: #2a85ff;
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+export const ModalBg = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #f4f4f4;
+  opacity: 0.7;
+`;
+
+export const Modal = styled.div`
+  width: 80%;
+  height: 90%;
+  overflow-y: scroll;
+  background: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  padding: 34px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  background: #fcfcfc;
+  box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.05),
+    0px 32px 48px -8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+`;
+
+export const ModalContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+`;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const Page = styled.div`
+  cursor: pointer;
+  font-weight: ${({ active }) => active && "bold"};
+`;
