@@ -203,3 +203,10 @@ export const Button = styled.div`
   gap: 10px;
   cursor: pointer;
 `;
+
+export const PaginationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+`;

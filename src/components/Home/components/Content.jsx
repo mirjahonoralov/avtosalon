@@ -13,10 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import plusIcon from "../../../assets/icons/plus.svg";
 import arrowRightIcon from "../../../assets/icons/arrow-right.svg";
 import { fetchAsyncAllCarByPage } from "../../../store/slices/carSlice";
-import Pagination from "./Pagination";
 import ModalTemplate from "../../ModalTemplate";
 import AddCategory from "./AddCategory";
 import AddCar from "./AddCarModal";
+import Pagination from "../../Pagination";
 
 const Content = () => {
   const categories = useSelector((state) => state.carSlice.categories);

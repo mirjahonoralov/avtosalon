@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   fetchAsyncCarsByCategory,
   fetchAsyncCategory,
 } from "../../store/slices/carSlice";
-import { CardWrapper, ImgWrapper, Wrapper } from "./style";
+import { CardWrapper, ImgWrapper, PaginationWrapper, Wrapper } from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../Pagination";
 
 const Models = ({ setCrumbs, crumbs }) => {
   const categories = useSelector((state) => state.carSlice.categories);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  console.log(categories);
 
   const handleClick = (name, id) => {
     setCrumbs([...crumbs, `${name} turlari`]);
@@ -19,8 +22,14 @@ const Models = ({ setCrumbs, crumbs }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchAsyncCategory());
+    dispatch(fetchAsyncCategory(page));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  useEffect(() => {
+    if (categories.data?.length) dispatch(fetchAsyncCategory(page));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   return (
     <>
@@ -38,6 +47,9 @@ const Models = ({ setCrumbs, crumbs }) => {
           </CardWrapper>
         ))}
       </Wrapper>
+      <PaginationWrapper>
+        <Pagination total={categories?.total} page={page} setPage={setPage} />
+      </PaginationWrapper>
     </>
   );
 };

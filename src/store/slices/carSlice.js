@@ -22,10 +22,9 @@ export const fetchAsyncCar = createAsyncThunk(
 
 export const fetchAsyncCategory = createAsyncThunk(
   "cars/fetchAsyncCategory",
-  async () => {
-    console.log("start fetchAsyncCategory");
+  async (page) => {
     const res = await fetch(
-      "https://cartestwebapp.herokuapp.com/category/marka?limit=5&page=1"
+      `https://cartestwebapp.herokuapp.com/category/marka?limit=5&page=${page}`
     );
     const data = await res.json();
     return data.data;
@@ -86,6 +85,7 @@ const initialState = {
     received: false,
     data: null,
     defaultCategory: null,
+    total: null,
   },
   carTypes: [],
   selectedCar: {
@@ -112,6 +112,7 @@ export const carSlice = createSlice({
     [fetchAsyncCategory.fulfilled]: (state, { payload }) => {
       state.received = true;
       state.categories.data = payload.data;
+      state.categories.total = payload.total;
       state.categories.defaultCategory = payload.data[0]._id;
     },
 
