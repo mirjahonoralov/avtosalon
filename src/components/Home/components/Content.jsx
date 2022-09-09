@@ -9,31 +9,36 @@ import {
   TopItem,
   TopLeft,
 } from "./style";
-import AddCarModal from "./AddCarModal";
 import { useDispatch, useSelector } from "react-redux";
 import plusIcon from "../../../assets/icons/plus.svg";
 import arrowRightIcon from "../../../assets/icons/arrow-right.svg";
-import { fetchAsyncAllCar } from "../../../store/slices/carSlice";
+import { fetchAsyncAllCarByPage } from "../../../store/slices/carSlice";
 import Pagination from "./Pagination";
+import ModalTemplate from "../../ModalTemplate";
+import AddCategory from "./AddCategory";
+import AddCar from "./AddCarModal";
 
 const Content = () => {
   const categories = useSelector((state) => state.carSlice.categories);
   const allCars = useSelector((state) => state.carSlice.allCars);
-  const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
+  const [carModalOpen, setCarModalOpen] = useState(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const handleCloseCarModal = () => setCarModalOpen(false);
+  const handleCloseCategoryModal = () => setCategoryModalOpen(false);
   const dispatch = useDispatch();
 
   const handleAddCar = () => {
     // dispatch(fetchAsyncCategory());
-    setOpen(true);
+    setCarModalOpen(true);
   };
 
   useEffect(() => {
     if (categories.data?.length) {
-      dispatch(fetchAsyncAllCar(categories.data[0]._id));
+      dispatch(fetchAsyncAllCarByPage(page));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   return (
     <ContentWrapper>
@@ -45,14 +50,28 @@ const Content = () => {
           </TopLeft>
 
           <Buttons>
-            <Button onClick={() => setOpen(true)}>
+            <Button onClick={() => setCategoryModalOpen(true)}>
               <img src={plusIcon} alt="" /> Kategoriya qo’shish
             </Button>
             <Button onClick={() => handleAddCar()}>
               <img src={plusIcon} alt="" /> Mashina qo‘shish
             </Button>
           </Buttons>
-          <AddCarModal open={open} handleClose={handleClose} />
+
+          <ModalTemplate
+            isHuge={true}
+            open={carModalOpen}
+            handleClose={handleCloseCarModal}
+          >
+            <AddCar handleClose={handleCloseCarModal} />
+          </ModalTemplate>
+
+          <ModalTemplate
+            open={categoryModalOpen}
+            handleClose={handleCloseCategoryModal}
+          >
+            <AddCategory handleClose={handleCloseCategoryModal} />
+          </ModalTemplate>
         </Top>
         <Table>
           <thead>
@@ -87,7 +106,7 @@ const Content = () => {
                 index
               ) => (
                 <tr key={_id}>
-                  <td>{index + 1}</td>
+                  <td>{(page - 1) * 5 + index + 1}</td>
                   <td>{marka.name}</td>
                   <td>{gearbok}</td>
                   <td>{tonirovka}</td>
@@ -103,7 +122,7 @@ const Content = () => {
             )}
           </tbody>
         </Table>
-        <Pagination total={allCars?.total} />
+        <Pagination total={allCars?.total} setPage={setPage} page={page} />
       </ContentComponent>
     </ContentWrapper>
   );

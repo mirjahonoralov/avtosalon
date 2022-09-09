@@ -116,38 +116,6 @@ export const Button = styled.div`
   cursor: pointer;
 `;
 
-export const ModalBg = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  background: #f4f4f4;
-  opacity: 0.7;
-`;
-
-export const Modal = styled.div`
-  width: 80%;
-  height: 90%;
-  overflow-y: scroll;
-  background: #fff;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 100;
-  padding: 34px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-
-  background: #fcfcfc;
-  box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.05),
-    0px 32px 48px -8px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-`;
-
 export const ModalContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -156,10 +124,33 @@ export const ModalContent = styled.div`
 
 export const PaginationWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
+  position: relative;
 `;
 
 export const Page = styled.div`
   cursor: pointer;
   font-weight: ${({ active }) => active && "bold"};
+
+  transition: 0.2s;
+
+  :active {
+    transform: scale(0.98);
+    opacity: 0.7;
+    transform: ${({ position }) => position && "rotate(180deg)"};
+  }
+`;
+
+export const Arrow = styled.img`
+  width: 35px;
+  transform: ${({ position }) => position && "rotate(180deg)"};
+  cursor: pointer;
+  transition: 0.2s;
+
+  :active {
+    transform: scale(0.98);
+    opacity: 0.7;
+    transform: ${({ position }) => position && "rotate(180deg)"};
+  }
 `;
