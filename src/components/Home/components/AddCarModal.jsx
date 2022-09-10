@@ -9,7 +9,7 @@ import Loading from "../../Loading";
 
 const AddCar = ({ handleClose }) => {
   const categories = useSelector((state) => state.carSlice.categories);
-  const { defaultCategory, data: categoriesList } = categories;
+  const [categoryList, setCategoryList] = useState([]);
   const items = ["Bor", "Yo'q"];
   const dispatch = useDispatch();
   const [data, setData] = useState({
@@ -27,14 +27,22 @@ const AddCar = ({ handleClose }) => {
     categoryId: "63180c53d0953487569045c7",
   });
 
-  const onInputChange = (e, name) => {
+  const onInputChange = (e, name) =>
     setData({ ...data, [name]: e.target.value });
-  };
 
   useEffect(() => {
-    setData({ ...data, categoryId: defaultCategory, tonirovka: items[0] });
+    setCategoryList(categories.data);
+    // setDefaultCategory(categories.defaultCategory);
+  }, [categories]);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      categoryId: categoryList?.[0]?._id,
+      tonirovka: items[0],
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultCategory]);
+  }, [categoryList]);
 
   const responsePostCar = useSelector(
     (state) => state.carSlice.responsePostCar
@@ -50,8 +58,8 @@ const AddCar = ({ handleClose }) => {
     <>
       <ModalContent>
         <CustomSelector
-          items={categoriesList}
-          value={data?.categoryId ? data?.categoryId : defaultCategory}
+          items={categoryList}
+          value={data?.categoryId}
           label="Markasi"
           onInputChange={onInputChange}
           name="categoryId"

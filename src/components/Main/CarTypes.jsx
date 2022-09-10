@@ -1,37 +1,60 @@
-import React from "react";
-import { CarTypeCard, CarTypesWrapper, ImgWrapper2 } from "./style";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import {
+  CarTypeCard,
+  CarTypesWrapper,
+  ImgWrapper2,
+  PaginationWrapper,
+} from "./style";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../assets/images/no image.png";
+import Pagination from "../Pagination";
+import { fetchAsyncCarsByCategory } from "../../store/slices/carSlice";
 
 const CarTypes = () => {
-  const carTypes = useSelector((state) => state.carSlice.carTypes);
+  const { carTypes } = useSelector((state) => state.carSlice);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const handleClick = (id) => {
-    navigate(`/main/models/types/${id}`);
-  };
+  const dispatch = useDispatch();
+  console.log(carTypes, "carTypes");
+
+  const handleClick = (id) => navigate(`/main/models/types/${id}`);
+
+  useEffect(() => {
+    dispatch(fetchAsyncCarsByCategory({ id: carTypes.categoryId, page }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  if (!(carTypes.data.data?.length > 0))
+    return <h2 style={{ marginTop: "30px" }}>Cars not found</h2>;
 
   return (
-    <CarTypesWrapper>
-      {carTypes?.data?.map((item) => (
-        <CarTypeCard key={item._id} onClick={() => handleClick(item._id)}>
-          <ImgWrapper2>
-            {item.imgUrl ? (
+    <>
+      <CarTypesWrapper>
+        {carTypes?.data?.data?.map((item) => (
+          <CarTypeCard key={item._id} onClick={() => handleClick(item._id)}>
+            <ImgWrapper2>
               <img
                 src={`https://cartestwebapp.herokuapp.com/${item.imgUrl}`}
                 alt=""
               />
-            ) : (
               <img src={noImage} alt="" />
-            )}
-          </ImgWrapper2>
-          <div>
-            <p>{item.marka.name.toUpperCase()}</p>
-            <p>Narxi: {item.price}</p>
-          </div>
-        </CarTypeCard>
-      ))}
-    </CarTypesWrapper>
+            </ImgWrapper2>
+            <div>
+              <p>{item?.marka?.name.toUpperCase()}</p>
+              <p>Narxi: {item.price}</p>
+            </div>
+          </CarTypeCard>
+        ))}
+      </CarTypesWrapper>
+      <PaginationWrapper>
+        <Pagination
+          total={carTypes?.data?.total}
+          page={page}
+          setPage={setPage}
+        />
+      </PaginationWrapper>
+    </>
   );
 };
 

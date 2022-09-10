@@ -12,14 +12,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import plusIcon from "../../../assets/icons/plus.svg";
 import arrowRightIcon from "../../../assets/icons/arrow-right.svg";
-import { fetchAsyncAllCarByPage } from "../../../store/slices/carSlice";
+import {
+  fetchAsyncAllCarByPage,
+  fetchAsyncCategory,
+} from "../../../store/slices/carSlice";
 import ModalTemplate from "../../ModalTemplate";
 import AddCategory from "./AddCategory";
 import AddCar from "./AddCarModal";
 import Pagination from "../../Pagination";
 
 const Content = () => {
-  const categories = useSelector((state) => state.carSlice.categories);
   const allCars = useSelector((state) => state.carSlice.allCars);
   const [carModalOpen, setCarModalOpen] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -29,14 +31,17 @@ const Content = () => {
   const dispatch = useDispatch();
 
   const handleAddCar = () => {
-    // dispatch(fetchAsyncCategory());
+    dispatch(fetchAsyncCategory(1));
     setCarModalOpen(true);
   };
 
+  const handleAddCategory = () => {
+    dispatch(fetchAsyncCategory(1));
+    setCategoryModalOpen(true);
+  };
+
   useEffect(() => {
-    if (categories.data?.length) {
-      dispatch(fetchAsyncAllCarByPage(page));
-    }
+    dispatch(fetchAsyncAllCarByPage(page));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
@@ -50,10 +55,10 @@ const Content = () => {
           </TopLeft>
 
           <Buttons>
-            <Button onClick={() => setCategoryModalOpen(true)}>
+            <Button onClick={handleAddCategory}>
               <img src={plusIcon} alt="" /> Kategoriya qo’shish
             </Button>
-            <Button onClick={() => handleAddCar()}>
+            <Button onClick={handleAddCar}>
               <img src={plusIcon} alt="" /> Mashina qo‘shish
             </Button>
           </Buttons>

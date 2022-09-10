@@ -83,13 +83,22 @@ export const ModelLeft = styled.div`
 
 export const ImgWrapper = styled.div`
   width: 100%;
-  padding: 0 30px;
+  height: 150px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
   img {
     width: 100%;
   }
   iframe {
     width: 100%;
     min-height: 350px;
+  }
+  img:nth-child(2) {
+    /* display: none; */
+    z-index: 1;
+    position: absolute;
   }
 `;
 
@@ -179,11 +188,20 @@ export const CardWrapper = styled.div`
 `;
 
 export const ImgWrapper2 = styled.div`
-  height: 150px;
+  height: 170px;
   width: 100%;
+  display: flex;
+  align-items: center;
   overflow: hidden;
+  position: relative;
   img {
     width: 100%;
+  }
+
+  img:nth-child(2) {
+    /* display: none; */
+    z-index: 1;
+    position: absolute;
   }
 `;
 

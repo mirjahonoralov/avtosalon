@@ -33,12 +33,12 @@ export const fetchAsyncCategory = createAsyncThunk(
 
 export const fetchAsyncCarsByCategory = createAsyncThunk(
   "cars/fetchAsyncCarsByCategory",
-  async (id) => {
+  async ({ id, page }) => {
     const res = await fetch(
-      `https://cartestwebapp.herokuapp.com/car?limit=5&page=1&categoryId=${id}`
+      `https://cartestwebapp.herokuapp.com/car?limit=5&page=${page}&categoryId=${id}`
     );
     const data = await res.json();
-    return data.data;
+    return { data: data.data, id };
   }
 );
 
@@ -87,7 +87,10 @@ const initialState = {
     defaultCategory: null,
     total: null,
   },
-  carTypes: [],
+  carTypes: {
+    data: [],
+    categoryId: null,
+  },
   selectedCar: {
     pending: false,
     data: null,
@@ -106,7 +109,11 @@ const initialState = {
 export const carSlice = createSlice({
   initialState,
   name: "cars",
-  reducers: {},
+  reducers: {
+    emptyCategoryId: (state) => {
+      state.carTypes.categoryId = null;
+    },
+  },
   extraReducers: {
     [fetchAsyncCategory.pending]: () => {},
     [fetchAsyncCategory.fulfilled]: (state, { payload }) => {
@@ -118,7 +125,8 @@ export const carSlice = createSlice({
 
     [fetchAsyncCarsByCategory.pending]: () => {},
     [fetchAsyncCarsByCategory.fulfilled]: (state, { payload }) => {
-      state.carTypes = payload;
+      state.carTypes.data = payload.data;
+      state.carTypes.categoryId = payload.id;
     },
 
     [fetchAsyncAllCarByPage.pending]: () => {},
@@ -154,4 +162,5 @@ export const carSlice = createSlice({
   },
 });
 
+export const { emptyCategoryId } = carSlice.actions;
 export default carSlice.reducer;
