@@ -20,11 +20,57 @@ const Pagination = ({ total, setPage, page }) => {
   return (
     <PaginationWrapper>
       <Arrow position="left" src={arrow} onClick={() => prev()} />
-      {items.map((item) => (
-        <Page key={item} active={item === page} onClick={() => setPage(item)}>
-          {item}
-        </Page>
-      ))}
+
+      {items.length <= 5 ? (
+        items.map((item) => (
+          <Page key={item} active={item === page} onClick={() => setPage(item)}>
+            {item}
+          </Page>
+        ))
+      ) : (
+        <>
+          <Page active={1 === page} onClick={() => setPage(1)}>
+            1
+          </Page>
+
+          {page >= 5 ? (
+            <div>...</div>
+          ) : (
+            <Page active={2 === page} onClick={() => setPage(2)}>
+              2
+            </Page>
+          )}
+
+          {(page < 5
+            ? [3, 4, 5]
+            : page < items.length - 3
+            ? [page - 1, page, page + 1]
+            : [
+                items.length - 4,
+                items.length - 3,
+                items.length - 2,
+                items.length - 1,
+              ]
+          ).map((item) => (
+            <Page
+              key={item}
+              active={item === page}
+              onClick={() => setPage(item)}
+            >
+              {item}
+            </Page>
+          ))}
+
+          {page < items.length - 3 && <div>...</div>}
+
+          <Page
+            active={items.length + 1 === page}
+            onClick={() => setPage(items.length + 1)}
+          >
+            {items.length}
+          </Page>
+        </>
+      )}
       <Arrow src={arrow} onClick={() => next()} />
     </PaginationWrapper>
   );
