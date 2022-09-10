@@ -64,8 +64,8 @@ const Pagination = ({ total, setPage, page }) => {
           {page < items.length - 3 && <div>...</div>}
 
           <Page
-            active={items.length + 1 === page}
-            onClick={() => setPage(items.length + 1)}
+            active={items.length === page}
+            onClick={() => setPage(items.length)}
           >
             {items.length}
           </Page>
