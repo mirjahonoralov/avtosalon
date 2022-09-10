@@ -21,7 +21,7 @@ const Pagination = ({ total, setPage, page }) => {
     <PaginationWrapper>
       <Arrow position="left" src={arrow} onClick={() => prev()} />
       {items.map((item) => (
-        <Page active={item === page} onClick={() => setPage(item)}>
+        <Page key={item} active={item === page} onClick={() => setPage(item)}>
           {item}
         </Page>
       ))}

@@ -107,7 +107,7 @@ const Content = () => {
               ) => (
                 <tr key={_id}>
                   <td>{(page - 1) * 5 + index + 1}</td>
-                  <td>{marka.name}</td>
+                  <td>{marka?.name}</td>
                   <td>{gearbok}</td>
                   <td>{tonirovka}</td>
                   <td>{motor}</td>
