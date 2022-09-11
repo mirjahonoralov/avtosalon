@@ -16,12 +16,17 @@ const CarTypes = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(carTypes, "carTypes");
 
   const handleClick = (id) => navigate(`/main/models/types/${id}`);
 
   useEffect(() => {
-    dispatch(fetchAsyncCarsByCategory({ id: carTypes.categoryId, page }));
+    if (carTypes.categoryId)
+      dispatch(
+        fetchAsyncCarsByCategory({
+          id: carTypes.categoryId,
+          page,
+        })
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
