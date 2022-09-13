@@ -12,23 +12,39 @@ const AddCar = ({ handleClose }) => {
   const [categoryList, setCategoryList] = useState([]);
   const items = ["Bor", "Yo'q"];
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
   const [data, setData] = useState({
-    imgUrl: "img-a463268af6f271bc3adac0871d505b4a.jpg",
-    imgUrlInside: "img-db607b3fdb99095051f37c849887ace7.jpg",
-    imgUrlAutside: "img-a463268af6f271bc3adac0871d505b4a.jpg",
-    price: 122000000,
-    year: 2020,
-    description: "avtomobil holati yaxshi",
-    tonirovka: " oldi orqa qilingan",
-    motor: "holati yaxshi ",
-    color: "rangi oq zavatiskoy",
-    distance: "11000",
-    gearbok: "avtomat",
-    categoryId: "63180c53d0953487569045c7",
+    imgUrl: "no",
+    imgUrlInside: "no",
+    imgUrlAutside: "no",
+    price: null,
+    year: null,
+    description: "",
+    tonirovka: "",
+    motor: "",
+    color: "",
+    distance: "",
+    gearbok: "",
+    categoryId: "",
   });
 
-  const onInputChange = (e, name) =>
-    setData({ ...data, [name]: e.target.value });
+  const onInputChange = (e, name) => {
+    if (name === "price" || name === "year")
+      setData({ ...data, [name]: Number(e.target.value) });
+    else setData({ ...data, [name]: e.target.value });
+  };
+
+  console.log(data, "data");
+
+  const responsePostCar = useSelector(
+    (state) => state.carSlice.responsePostCar
+  );
+  const { pending, success } = responsePostCar;
+
+  useEffect(() => {
+    if (success) handleClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success]);
 
   useEffect(() => {
     setCategoryList(categories.data);
@@ -44,15 +60,20 @@ const AddCar = ({ handleClose }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryList]);
 
-  const responsePostCar = useSelector(
-    (state) => state.carSlice.responsePostCar
-  );
-  const { pending, success } = responsePostCar;
-
-  useEffect(() => {
-    if (success) handleClose();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [success]);
+  const onSubmit = () => {
+    if (
+      data.color &&
+      data.description &&
+      data.distance &&
+      data.gearbok &&
+      data.motor &&
+      data.price &&
+      data.year &&
+      data.tonirovka
+    )
+      dispatch(postAsyncCar(data));
+    else setError(true);
+  };
 
   return (
     <>
@@ -63,6 +84,7 @@ const AddCar = ({ handleClose }) => {
           label="Markasi"
           onInputChange={onInputChange}
           name="categoryId"
+          // isError={!data.categoryId && error}
         />
         <CustomSelector
           items={items}
@@ -71,6 +93,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           type="second"
           name="tonirovka"
+          // isError={!data.tonirovka && error}
         />
         <CustomInput
           name="motor"
@@ -78,6 +101,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Motor"
           placeholder="Kiriting"
+          isError={!data.motor && error}
         />
         <CustomInput
           name="year"
@@ -85,6 +109,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Year"
           placeholder="Kiriting"
+          isError={!data.year && error}
         />
         <CustomInput
           name="color"
@@ -92,6 +117,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Color"
           placeholder="Kiriting"
+          isError={!data.color && error}
         />
         <CustomInput
           name="distance"
@@ -99,6 +125,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Distance"
           placeholder="Kiriting"
+          isError={!data.distance && error}
         />
         <CustomInput
           name="gearbok"
@@ -106,6 +133,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Gearbok"
           placeholder="Kiriting"
+          isError={!data.gearbok && error}
         />
         <CustomInput
           name="price"
@@ -113,6 +141,7 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           label="Narxi"
           placeholder="Kiriting"
+          isError={!data.price && error}
         />
         <UploadFile label="Rasm 360 ichki makon" placeholder="Yuklash" />
         <UploadFile label="Rasm 360 tashqi makon" placeholder="Yuklash" />
@@ -123,11 +152,12 @@ const AddCar = ({ handleClose }) => {
           label="Description"
           placeholder="Mazmuni kiriting"
           textArea={true}
+          isError={!data.description && error}
         />
         <UploadFile label="Modeli turi uchun rasm" placeholder="Yuklash" />
       </ModalContent>
       <div style={{ marginLeft: "auto" }}>
-        <Button onClick={() => dispatch(postAsyncCar(data))}>
+        <Button onClick={onSubmit}>
           {pending && <Loading />}
           Saqlash
         </Button>

@@ -31,8 +31,8 @@ const Content = () => {
   const dispatch = useDispatch();
 
   const handleAddCar = () => {
-    dispatch(fetchAsyncCategory(1));
     setCarModalOpen(true);
+    dispatch(fetchAsyncCategory(1));
   };
 
   const handleAddCategory = () => {

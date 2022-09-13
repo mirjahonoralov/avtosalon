@@ -38,19 +38,36 @@ const Wrapper = styled.div`
   }
 `;
 
-const CustomInput = ({ label, placeholder, textArea, onInputChange, name }) => {
+const ErrorText = styled.div`
+  color: red;
+  margin-top: 5px;
+  font-size: 13px;
+`;
+
+const CustomInput = ({
+  label,
+  placeholder,
+  textArea,
+  onInputChange,
+  name,
+  isError,
+}) => {
   return (
-    <Wrapper>
-      <p>{label}</p>
-      {textArea ? (
-        <textarea rows={7} onChange={(e) => onInputChange(e, name)} />
-      ) : (
-        <input
-          placeholder={placeholder}
-          onChange={(e) => onInputChange(e, name)}
-        />
-      )}
-    </Wrapper>
+    <div>
+      <Wrapper>
+        <p>{label}</p>
+        {textArea ? (
+          <textarea rows={7} onChange={(e) => onInputChange(e, name)} />
+        ) : (
+          <input
+            placeholder={placeholder}
+            onChange={(e) => onInputChange(e, name)}
+          />
+        )}
+      </Wrapper>
+
+      {isError && <ErrorText>*Fill there</ErrorText>}
+    </div>
   );
 };
 
