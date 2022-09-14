@@ -39,7 +39,6 @@ const AddCar = ({ handleClose }) => {
       setData({ ...data, [name]: Number(e.target.value) });
     else setData({ ...data, [name]: e.target.value });
   };
-  console.log(images, "images");
 
   const onUpload = async (e, name) => {
     for (let key in images) {
@@ -69,15 +68,15 @@ const AddCar = ({ handleClose }) => {
     setData({ ...data, [name]: resImage?.data });
   };
 
-  console.log(data, "data");
-
   const responsePostCar = useSelector(
     (state) => state.carSlice.responsePostCar
   );
   const { pending, success } = responsePostCar;
 
   useEffect(() => {
+    console.log(success);
     if (success) handleClose();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success]);
 

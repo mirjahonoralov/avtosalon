@@ -41,6 +41,7 @@ const initialState = {
   isSignUp: false,
   isSignIn: false,
   message: "",
+  userId: "",
 };
 
 export const loginSlice = createSlice({
@@ -64,8 +65,10 @@ export const loginSlice = createSlice({
       console.log(payload, "payload in signIn");
       state.message = payload.data.message;
       state.isSignIn = payload.statusCode === 200 ? true : false;
-      if (payload.data.token)
+      if (payload.data.token) {
         localStorage.setItem("employeeToken", payload.data.token);
+        state.userId = payload.data._id;
+      }
     },
     [signIn.rejected]: (state, { payload }) => {
       console.log(payload, "payload in reject");

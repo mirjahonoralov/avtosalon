@@ -47,6 +47,12 @@ const Label = styled.label`
   cursor: pointer;
 `;
 
+const ErrorText = styled.div`
+  color: red;
+  margin-top: 5px;
+  font-size: 13px;
+`;
+
 const UploadFile = ({
   label,
   placeholder,
@@ -54,6 +60,7 @@ const UploadFile = ({
   name,
   imageName,
   uploading,
+  isError,
 }) => {
   return (
     <Wrapper>
@@ -66,7 +73,8 @@ const UploadFile = ({
         <p>{placeholder}</p>
       </Label>
       <input type="file" id={label} onChange={(e) => onChange(e, name)} />
-      <p>{imageName}</p>
+      {imageName && <p>{imageName}</p>}
+      {isError && <ErrorText>*Fill there</ErrorText>}
     </Wrapper>
   );
 };

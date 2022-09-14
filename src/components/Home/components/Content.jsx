@@ -15,6 +15,8 @@ import arrowRightIcon from "../../../assets/icons/arrow-right.svg";
 import {
   fetchAsyncAllCarByPage,
   fetchAsyncCategory,
+  restartPostCategoryStatus,
+  restartPostStatus,
 } from "../../../store/slices/carSlice";
 import ModalTemplate from "../../ModalTemplate";
 import AddCategory from "./AddCategory";
@@ -40,10 +42,22 @@ const Content = () => {
     setCategoryModalOpen(true);
   };
 
+  const responsePostCar = useSelector(
+    (state) => state.carSlice.responsePostCar
+  );
+  const { success } = responsePostCar;
+
+  const responsePostCategory = useSelector(
+    (state) => state.carSlice.responsePostCategory
+  );
+  const { success: categorySuccess } = responsePostCategory;
+
   useEffect(() => {
     dispatch(fetchAsyncAllCarByPage(page));
+    if (success) dispatch(restartPostStatus());
+    if (categorySuccess) dispatch(restartPostCategoryStatus());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, success, categorySuccess]);
 
   return (
     <ContentWrapper>

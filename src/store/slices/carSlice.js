@@ -114,6 +114,12 @@ export const carSlice = createSlice({
     emptyCategoryId: (state) => {
       state.carTypes.categoryId = null;
     },
+    restartPostStatus: (state) => {
+      state.responsePostCar.success = false;
+    },
+    restartPostCategoryStatus: (state) => {
+      state.responsePostCategory.success = false;
+    },
   },
   extraReducers: {
     [fetchAsyncCategory.pending]: () => {},
@@ -164,5 +170,6 @@ export const carSlice = createSlice({
   },
 });
 
-export const { emptyCategoryId } = carSlice.actions;
+export const { emptyCategoryId, restartPostStatus, restartPostCategoryStatus } =
+  carSlice.actions;
 export default carSlice.reducer;
