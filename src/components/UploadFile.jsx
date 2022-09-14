@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import camera from "../assets/icons/camera.svg";
+import Loading from "./Loading";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -27,6 +28,12 @@ const Wrapper = styled.div`
   }
 `;
 
+const UploadLabel = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
 const Label = styled.label`
   width: 100%;
   background: #f4f4f4;
@@ -40,15 +47,26 @@ const Label = styled.label`
   cursor: pointer;
 `;
 
-const UploadFile = ({ label, placeholder }) => {
+const UploadFile = ({
+  label,
+  placeholder,
+  onChange,
+  name,
+  imageName,
+  uploading,
+}) => {
   return (
     <Wrapper>
-      <p>{label}</p>
+      <UploadLabel>
+        <p>{label}</p>
+        {uploading && <Loading color={"red"} />}
+      </UploadLabel>
       <Label htmlFor={label}>
         <img src={camera} alt="" />
         <p>{placeholder}</p>
       </Label>
-      <input type="file" id={label} />
+      <input type="file" id={label} onChange={(e) => onChange(e, name)} />
+      <p>{imageName}</p>
     </Wrapper>
   );
 };

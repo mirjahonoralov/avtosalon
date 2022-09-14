@@ -13,10 +13,16 @@ const AddCar = ({ handleClose }) => {
   const items = ["Bor", "Yo'q"];
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
+  const [images, setImages] = useState({
+    imgUrl: "",
+    imgUrlInside: "",
+    imgUrlAutside: "",
+  });
+  const [imageUploading, setImageUploading] = useState(false);
   const [data, setData] = useState({
-    imgUrl: "no",
-    imgUrlInside: "no",
-    imgUrlAutside: "no",
+    imgUrl: "",
+    imgUrlInside: "",
+    imgUrlAutside: "",
     price: null,
     year: null,
     description: "",
@@ -32,6 +38,35 @@ const AddCar = ({ handleClose }) => {
     if (name === "price" || name === "year")
       setData({ ...data, [name]: Number(e.target.value) });
     else setData({ ...data, [name]: e.target.value });
+  };
+  console.log(images, "images");
+
+  const onUpload = async (e, name) => {
+    for (let key in images) {
+      if (key === name)
+        setImages({
+          ...images,
+          [name]: e.target.files[0].name,
+        });
+    }
+
+    let image = new FormData();
+    image.append("file", e.target.files[0]);
+    image.append("name", "my image");
+    image.append("type", "img");
+
+    setImageUploading(true);
+    const res = await fetch("https://cartestwebapp.herokuapp.com/upload", {
+      method: "POST",
+      body: image,
+      headers: {
+        Authorization: `bearer ${localStorage.getItem("employeeToken")}`,
+      },
+    });
+    const resImage = await res.json();
+    setImageUploading(false);
+
+    setData({ ...data, [name]: resImage?.data });
   };
 
   console.log(data, "data");
@@ -84,7 +119,6 @@ const AddCar = ({ handleClose }) => {
           label="Markasi"
           onInputChange={onInputChange}
           name="categoryId"
-          // isError={!data.categoryId && error}
         />
         <CustomSelector
           items={items}
@@ -93,7 +127,6 @@ const AddCar = ({ handleClose }) => {
           onInputChange={onInputChange}
           type="second"
           name="tonirovka"
-          // isError={!data.tonirovka && error}
         />
         <CustomInput
           name="motor"
@@ -143,8 +176,22 @@ const AddCar = ({ handleClose }) => {
           placeholder="Kiriting"
           isError={!data.price && error}
         />
-        <UploadFile label="Rasm 360 ichki makon" placeholder="Yuklash" />
-        <UploadFile label="Rasm 360 tashqi makon" placeholder="Yuklash" />
+        <UploadFile
+          label="Rasm 360 ichki makon"
+          placeholder="Yuklash"
+          onChange={onUpload}
+          name="imgUrlInside"
+          uploading={imageUploading && !data.imgUrlInside}
+          imageName={data.imgUrlInside && images.imgUrlInside}
+        />
+        <UploadFile
+          label="Rasm 360 tashqi makon"
+          placeholder="Yuklash"
+          name="imgUrlAutside"
+          onChange={onUpload}
+          uploading={imageUploading && !data.imgUrlAutside}
+          imageName={data.imgUrlAutside && images.imgUrlAutside}
+        />
         <CustomInput
           name="description"
           data={data}
@@ -154,7 +201,14 @@ const AddCar = ({ handleClose }) => {
           textArea={true}
           isError={!data.description && error}
         />
-        <UploadFile label="Modeli turi uchun rasm" placeholder="Yuklash" />
+        <UploadFile
+          label="Modeli turi uchun rasm"
+          placeholder="Yuklash"
+          name="imgUrl"
+          onChange={onUpload}
+          uploading={imageUploading && !data.imgUrl}
+          imageName={data.imgUrl && images.imgUrl}
+        />
       </ModalContent>
       <div style={{ marginLeft: "auto" }}>
         <Button onClick={onSubmit}>
