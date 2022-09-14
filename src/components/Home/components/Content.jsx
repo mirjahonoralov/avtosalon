@@ -22,6 +22,7 @@ import ModalTemplate from "../../ModalTemplate";
 import AddCategory from "./AddCategory";
 import AddCar from "./AddCarModal";
 import Pagination from "../../Pagination";
+import { useNavigate } from "react-router-dom";
 
 const Content = () => {
   const allCars = useSelector((state) => state.carSlice.allCars);
@@ -31,6 +32,7 @@ const Content = () => {
   const handleCloseCarModal = () => setCarModalOpen(false);
   const handleCloseCategoryModal = () => setCategoryModalOpen(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAddCar = () => {
     setCarModalOpen(true);
@@ -40,6 +42,10 @@ const Content = () => {
   const handleAddCategory = () => {
     dispatch(fetchAsyncCategory(1));
     setCategoryModalOpen(true);
+  };
+
+  const handleClickCar = (id) => {
+    navigate(`/main/models/types/${id}`);
   };
 
   const responsePostCar = useSelector(
@@ -124,7 +130,11 @@ const Content = () => {
                 },
                 index
               ) => (
-                <tr key={_id}>
+                <tr
+                  key={_id}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleClickCar(_id)}
+                >
                   <td>{(page - 1) * 5 + index + 1}</td>
                   <td>{marka?.name}</td>
                   <td>{gearbok}</td>
