@@ -200,7 +200,7 @@ export const ImgWrapper2 = styled.div`
 
   img:nth-child(2) {
     /* display: none; */
-    z-index: 1;
+    /* z-index: 1; */
     position: absolute;
   }
 `;
