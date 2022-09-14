@@ -26,6 +26,11 @@ const Main = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [crumbs, params.id]);
 
+  const toAdmin = () => {
+    if (localStorage.getItem("employeeToken")) navigate("/main");
+    else navigate("/login");
+  };
+
   return (
     <Container>
       <MainTop>
@@ -39,7 +44,7 @@ const Main = () => {
             );
           })}
         </BreadCrumbs>
-        <Button onClick={() => navigate("/main")}>
+        <Button onClick={toAdmin}>
           <img src={person} alt="" /> Admin o‘tish
         </Button>
       </MainTop>

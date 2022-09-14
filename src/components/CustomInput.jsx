@@ -51,6 +51,7 @@ const CustomInput = ({
   onInputChange,
   name,
   isError,
+  type,
 }) => {
   return (
     <div>
@@ -62,6 +63,7 @@ const CustomInput = ({
           <input
             placeholder={placeholder}
             onChange={(e) => onInputChange(e, name)}
+            type={type}
           />
         )}
       </Wrapper>
