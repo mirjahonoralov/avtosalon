@@ -69,7 +69,7 @@ const CustomInput = ({
             placeholder={placeholder}
             onChange={(e) => onInputChange(e, name)}
             type={type}
-            value={data[name]}
+            value={data?.[name]}
           />
         )}
       </Wrapper>
