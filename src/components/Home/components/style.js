@@ -52,6 +52,10 @@ export const Table = styled.table`
         line-height: 24px;
         letter-spacing: -0.01em;
         color: #1a1d1f;
+
+        img {
+          width: 25px;
+        }
       }
     }
   }

@@ -20,6 +20,19 @@ export const fetchAsyncCar = createAsyncThunk(
   }
 );
 
+export const deleteCar = createAsyncThunk("cars/deleteCar", async (id) => {
+  console.log(id, "id");
+  const res = await fetch(`https://cartestwebapp.herokuapp.com/car/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const data = await res.json();
+  console.log(data, "delete");
+  return data;
+});
+
 export const fetchAsyncCategory = createAsyncThunk(
   "cars/fetchAsyncCategory",
   async (page) => {
@@ -53,7 +66,24 @@ export const postAsyncCar = createAsyncThunk(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
+        Authorization: `bearer ${localStorage.getItem("employeeToken")}`,
+      },
+
+      body: JSON.stringify(data),
+    });
+    const resData = await res.json();
+    console.log(resData);
+  }
+);
+
+export const postAsyncEditedCar = createAsyncThunk(
+  "cars/postAsyncCar",
+  async (data) => {
+    const res = await fetch("https://cartestwebapp.herokuapp.com/car", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${localStorage.getItem("employeeToken")}`,
       },
 
       body: JSON.stringify(data),
@@ -105,6 +135,7 @@ const initialState = {
     pending: false,
     success: false,
   },
+  deletedCar: false,
 };
 
 export const carSlice = createSlice({
@@ -166,6 +197,22 @@ export const carSlice = createSlice({
     [postAsyncCar.fulfilled]: (state, { payload }) => {
       state.responsePostCar.pending = false;
       state.responsePostCar.success = true;
+    },
+
+    [postAsyncEditedCar.pending]: (state) => {
+      state.responsePostCar.pending = true;
+      state.responsePostCar.success = false;
+    },
+    [postAsyncEditedCar.fulfilled]: (state, { payload }) => {
+      state.responsePostCar.pending = false;
+      state.responsePostCar.success = true;
+    },
+
+    [deleteCar.pending]: (state) => {
+      state.deletedCar = false;
+    },
+    [deleteCar.fulfilled]: (state, { payload }) => {
+      if (payload?.statusCode === 200) state.deletedCar = true;
     },
   },
 });

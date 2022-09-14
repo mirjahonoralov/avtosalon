@@ -4,11 +4,16 @@ import { Button, ModalContent } from "./style";
 import CustomSelector from "../../CustomSelector";
 import UploadFile from "../../UploadFile";
 import { useDispatch, useSelector } from "react-redux";
-import { postAsyncCar } from "../../../store/slices/carSlice";
+import {
+  fetchAsyncCar,
+  postAsyncCar,
+  postAsyncEditedCar,
+} from "../../../store/slices/carSlice";
 import Loading from "../../Loading";
 
-const AddCar = ({ handleClose }) => {
+const AddCar = ({ handleClose, carId }) => {
   const categories = useSelector((state) => state.carSlice.categories);
+  const selectedCar = useSelector((state) => state.carSlice.selectedCar);
   const [categoryList, setCategoryList] = useState([]);
   const items = ["Bor", "Yo'q"];
   const dispatch = useDispatch();
@@ -86,11 +91,12 @@ const AddCar = ({ handleClose }) => {
   }, [categories]);
 
   useEffect(() => {
-    setData({
-      ...data,
-      categoryId: categoryList?.[0]?._id,
-      tonirovka: items[0],
-    });
+    if (!carId)
+      setData({
+        ...data,
+        categoryId: categoryList?.[0]?._id,
+        tonirovka: items[0],
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryList]);
 
@@ -104,10 +110,26 @@ const AddCar = ({ handleClose }) => {
       data.price &&
       data.year &&
       data.tonirovka
-    )
-      dispatch(postAsyncCar(data));
-    else setError(true);
+    ) {
+      if (carId) dispatch(postAsyncEditedCar(data));
+      else dispatch(postAsyncCar(data));
+    } else setError(true);
   };
+
+  useEffect(() => {
+    if (carId) {
+      dispatch(fetchAsyncCar(carId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (selectedCar?.data) {
+      console.log(selectedCar, "selectedCar");
+
+      setData(selectedCar.data);
+    }
+  }, [selectedCar]);
 
   return (
     <>

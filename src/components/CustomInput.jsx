@@ -52,18 +52,24 @@ const CustomInput = ({
   name,
   isError,
   type,
+  data,
 }) => {
   return (
     <div>
       <Wrapper>
         <p>{label}</p>
         {textArea ? (
-          <textarea rows={7} onChange={(e) => onInputChange(e, name)} />
+          <textarea
+            rows={7}
+            onChange={(e) => onInputChange(e, name)}
+            value={data[name]}
+          />
         ) : (
           <input
             placeholder={placeholder}
             onChange={(e) => onInputChange(e, name)}
             type={type}
+            value={data[name]}
           />
         )}
       </Wrapper>
